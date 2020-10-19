@@ -1,18 +1,21 @@
-// Initial welcome page. Delete the following line to remove it.
-import React from "react"
-import ReactDOM from "react-dom"
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "mobx-react";
 
-// @ts-ignore
-import greenworks from "greenworks"
-// import {App} from "./components/app.jsx";
-greenworks.init()
+import { stores } from "./store";
+import SteamInfo from "./components/steam-info";
+import { Layout } from "./components/layout/layout";
+import { GlobalStyle } from "./shared";
 
 const App = () => {
-
-  return <div>
-    <h1>Hello fuckers</h1>
-  </div>
-}
-
+  return (
+    <Provider {...stores}>
+      <GlobalStyle />
+      <Layout>
+        <SteamInfo />
+      </Layout>
+    </Provider>
+  );
+};
 
 ReactDOM.render(<App />, document.getElementById("root"));

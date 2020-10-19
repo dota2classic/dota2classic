@@ -9,10 +9,14 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
+    "bignumber.js": "^9.0.1",
     "greenworks": "git+https://github.com/greenheartgames/greenworks.git",
+    "mobx": "^6.0.1",
+    "mobx-react": "^7.0.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "source-map-support": "^0.5.16",
+    "styled-components": "^5.2.0",
     "update-electron-app": "^2.0.1"
   },
   "build": {
@@ -25,18 +29,25 @@
     "@babel/preset-react": "^7.12.1",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "@types/styled-components": "^5.1.4",
     "electron": "4.2.12",
     "electron-builder": "^22.4.1",
     "electron-rebuild": "^2.2.0",
     "electron-webpack": "^2.8.2",
     "electron-webpack-ts": "^4.0.1",
+    "prettier": "^2.1.2",
     "typescript": "^4.0.3",
     "webpack": "~4.42.1"
   },
   "electronWebpack": {
+    "whiteListedModules": [
+      "react",
+      "react-dom",
+      "mobx-react",
+      "styled-components"
+    ],
     "renderer": {
       "template": "src/index.html"
     }
   }
-
 }
