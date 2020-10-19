@@ -10,7 +10,9 @@ let mainWindow;
 function createMainWindow() {
   const window = new BrowserWindow({
     webPreferences: { nodeIntegration: true },
-    // title: "dota2classic",
+    title: "dota2classic",
+    width: 920,
+    height: 680
   });
 
   window.setResizable(false);

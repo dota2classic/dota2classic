@@ -1,8 +1,9 @@
 import {useStores} from "../../store";
-import { observer } from "mobx-react";
-import styled, { keyframes } from "styled-components";
-import { colors } from "../../shared";
+import {observer} from "mobx-react";
+import styled, {keyframes} from "styled-components";
+import {colors} from "../../shared";
 import React from "react";
+import {remote} from "electron";
 
 const FullScreen = styled.div`
   width: 100vw;
@@ -86,8 +87,7 @@ const Button = styled.button`
   }
 `;
 export const WelcomeScreen = observer(() => {
-
-  const stores = useStores()
+  const stores = useStores();
 
   if (stores.steam.steamRunning === false) {
     return (
@@ -106,7 +106,40 @@ export const WelcomeScreen = observer(() => {
       </FullScreen>
     );
 
+  if (stores.steam.noUser) {
+    return (
+      <FullScreen>
+        <GenericIssue>
+          Для работы приложения нужно войти в Steam аккаунт
+        </GenericIssue>
+        <Button onClick={() => stores.steam.sync()}>Я вошел в аккаунт</Button>
+      </FullScreen>
+    );
+  }
 
+  if (stores.settings.path_681 === undefined) {
+    return (
+      <FullScreen>
+        <GenericIssue>
+          Остался последний шаг - укажите путь к dota.exe
+        </GenericIssue>
+        <Button
+          onClick={() => {
+            const s = remote.dialog.showOpenDialog({
+              properties: ["openFile"],
+              filters: [{ extensions: ["exe", "ts"], name: "Dota 2" }],
+            });
+
+            if (s) {
+              stores.settings.set681Path(s[0]);
+            }
+          }}
+        >
+          Указать путь к игре
+        </Button>
+      </FullScreen>
+    );
+  }
 
   return <div>todo</div>;
 });

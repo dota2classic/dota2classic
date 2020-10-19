@@ -15,6 +15,9 @@ export class Steam {
   @observable
   public isLoading = true;
 
+  @observable
+  public noUser = true;
+
   @computed
   public get signedIn(): boolean {
     return !!this.steamID;
@@ -37,7 +40,8 @@ export class Steam {
       this.steamRunning = true;
     } catch (e) {
       console.log(`Init error`, e);
-      if (e.message.includes("running")) this.steamRunning = false;
+      if (e.message.includes("not running")) this.steamRunning = false;
+      else if(e.message.includes("is running")) this.steamRunning = true;
       return;
     } finally {
       console.log(`Settting loading to false`);
@@ -49,8 +53,9 @@ export class Steam {
       const info = greenworks.getSteamId();
       this.steamID = info.steamId;
       this.personaName = info.screenName;
-      console.log(info);
+      this.noUser = false;
     } catch (e) {
+      this.noUser = true;
       console.log(`auth error`, e);
     } finally {
       console.log(`Settting loading to false`);

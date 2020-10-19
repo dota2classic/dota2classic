@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bignumber.js": "^9.0.1",
+    "classnames": "^2.2.6",
     "greenworks": "git+https://github.com/greenheartgames/greenworks.git",
     "mobx": "^5.11.0",
     "mobx-react": "^6.2.2",
