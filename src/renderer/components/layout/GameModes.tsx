@@ -3,6 +3,7 @@ import {formatGameMode, MatchmakingMode} from "../../util/matchmaking-mode";
 import styled from "styled-components";
 import React from "react";
 import {useStores} from "../../store";
+// @ts-ignore
 import cx from "classnames";
 
 const MOption = styled.div`
@@ -62,7 +63,7 @@ const Options = styled.div`
   display: flex;
   flex-direction: column;
   padding: 100px 10px 10px;
-  border-right: 1px solid #4e4d4d;
+  border-right: 1px solid #242424;
 `;
 export const GameModes = observer(() => {
   return (

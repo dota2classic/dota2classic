@@ -11,7 +11,7 @@ const InfoRow = styled.div`
   align-items: center;
   padding: 10px;
   width: 100%;
-  border-bottom: 1px solid #4e4d4d;
+  border-bottom: 1px solid #242424;
 `;
 
 const UsernameInactiveInfo = styled.div`
