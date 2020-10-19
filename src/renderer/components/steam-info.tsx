@@ -25,6 +25,25 @@ const Username = styled.div`
   margin-right: 20px;
 `;
 
+const CancelFindGameButton = styled.div`
+  padding: 10px;
+  color: ${colors.primaryText};
+
+  border: 1px solid grey;
+
+  margin-right: 20px;
+  cursor: pointer;
+
+  transition: 0.3s ease;
+  color: ${colors.primaryTextDark};
+  background-color: ${colors.evenDarkerBg};
+
+  &:hover {
+    color: ${colors.primaryText};
+    background-color: ${colors.darkBg};
+  }
+`;
+
 const pendingAnimation = keyframes`
   0% {
     color: ${colors.primaryTextDark};
@@ -63,9 +82,21 @@ export default observer(() => {
 
       {stores.game.searchingMode !== undefined && (
         <SearchGameBar>
-          Идет поиск игры, режим:{" "}
-          <b>{formatGameMode(stores.game.searchingMode)}</b>
+          Поиск <b>{formatGameMode(stores.game.searchingMode)}</b>, игроков: {stores.game.inQueue}
         </SearchGameBar>
+      )}
+
+      <div style={{ flex: 1 }} />
+      {(stores.game.searchingMode !== undefined && (
+        <CancelFindGameButton onClick={() => stores.game.cancelSearch()}>
+          Отменить поиск
+        </CancelFindGameButton>
+      )) || (
+        <CancelFindGameButton
+          onClick={() => stores.game.startSearch(stores.game.activeMode)}
+        >
+          Искать игру
+        </CancelFindGameButton>
       )}
     </InfoRow>
   );

@@ -6,6 +6,7 @@ import {observer} from "mobx-react";
 import {WelcomeScreen} from "../setup/WelcomeScreen";
 import {GameModes} from "./GameModes";
 import SteamInfo from "../steam-info";
+import {SelectedGameMode} from "./SelectedGameMode";
 
 const AppLayout = styled.div`
   width: 100vw;
@@ -30,6 +31,7 @@ export const Layout = observer(({ children }: PropsWithChildren<{}>) => {
         <GameModes />
         <Content>
           <SteamInfo />
+          <SelectedGameMode />
         </Content>
       </AppLayout>
     );

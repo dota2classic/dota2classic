@@ -50,9 +50,21 @@ const MatchmakingOption = observer((props: MProps) => {
   return (
     <MOption
       className={cx(
-        game.searchingMode === props.mode && "active",
-        game.searchingMode !== undefined && game.searchingMode !== props.mode && "disabled"
+        game.searchingMode === props.mode || game.activeMode === props.mode && "active",
+        game.searchingMode !== undefined &&
+          game.searchingMode !== props.mode &&
+          "disabled"
       )}
+      onClick={() => {
+        if (
+          !(
+            game.searchingMode !== undefined &&
+            game.searchingMode !== props.mode
+          )
+        ) {
+          game.activeMode = props.mode;
+        }
+      }}
     >
       {formatGameMode(props.mode)}
     </MOption>
