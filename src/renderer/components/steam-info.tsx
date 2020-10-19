@@ -1,6 +1,6 @@
 import React from "react";
-import { observer } from "mobx-react";
-import { useStores } from "../store";
+import { observer } from "mobx-react-lite";
+import {useStores} from "../store";
 import styled from "styled-components";
 import {colors} from "../shared";
 
@@ -29,8 +29,9 @@ const SteamLogo = styled.img`
 `;
 
 export default observer(() => {
-  const stores = useStores();
 
+
+  const stores = useStores()
   return (
     <InfoRow>
       {stores.steam.signedIn ? (

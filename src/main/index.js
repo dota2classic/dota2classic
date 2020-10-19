@@ -1,8 +1,3 @@
-"use strict";
-require("update-electron-app")({
-  repo: "dota2classic/dota2classic",
-});
-
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
 import { format as formatUrl } from "url";
@@ -18,11 +13,11 @@ function createMainWindow() {
     // title: "dota2classic",
   });
 
-  // window.setResizable(false);
-  // window.setMaximizable(false);
+  window.setResizable(false);
+  window.setMaximizable(false);
 
   if (isDevelopment) {
-    window.webContents.openDevTools();
+    // window.webContents.openDevTools();
   }
 
   if (isDevelopment) {
@@ -36,6 +31,12 @@ function createMainWindow() {
       })
     );
   }
+
+
+  window.webContents.once("did-frame-finish-load", function (event) {
+    console.log(`Checking for update`)
+    // todo check update
+  })
 
   window.on("closed", () => {
     mainWindow = null;

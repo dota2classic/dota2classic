@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {colors} from "../../shared";
 import {useStores} from "../../store";
 import {observer} from "mobx-react";
-import {WelcomeScreen} from "../WelcomeScreen";
+import {WelcomeScreen} from "../setup/WelcomeScreen";
 
 const AppLayout = styled.div`
   width: 100vw;

@@ -1,6 +1,6 @@
 {
   "name": "electron-webpack-quick-start",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -11,8 +11,8 @@
   "dependencies": {
     "bignumber.js": "^9.0.1",
     "greenworks": "git+https://github.com/greenheartgames/greenworks.git",
-    "mobx": "^6.0.1",
-    "mobx-react": "^7.0.0",
+    "mobx": "^5.11.0",
+    "mobx-react": "^6.2.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "source-map-support": "^0.5.16",
