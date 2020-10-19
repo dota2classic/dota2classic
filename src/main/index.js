@@ -1,4 +1,7 @@
 'use strict'
+require('update-electron-app')({
+  repo: "dota2classic/dota2classic"
+})
 
 import { app, BrowserWindow } from 'electron'
 import * as path from 'path'

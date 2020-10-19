@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "greenworks": "git+https://github.com/greenheartgames/greenworks.git",
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.16",
+    "update-electron-app": "^2.0.1"
   },
-
   "build": {
     "appId": "ru.dota2classic.app",
     "extraFiles": [
