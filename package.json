@@ -6,13 +6,13 @@
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
+    "package": "electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
     "greenworks": "git+https://github.com/greenheartgames/greenworks.git",
     "source-map-support": "^0.5.16"
   },
-
   "build": {
     "appId": "ru.dota2classic.app",
     "extraFiles": [
