@@ -61,4 +61,7 @@ export const WelcomeScreen = observer(() => {
         <Dota2Classic>dota2classic</Dota2Classic>
       </FullScreen>
     );
+
+
+  return <h1>what</h1>
 });
