@@ -16,8 +16,8 @@ function createMainWindow() {
     icon: path.join(__dirname, "static", "logo.jpg")
   });
 
-  window.setResizable(false);
-  window.setMaximizable(false);
+  // window.setResizable(false);
+  // window.setMaximizable(false);
 
   if (isDevelopment) {
     // window.webContents.openDevTools();

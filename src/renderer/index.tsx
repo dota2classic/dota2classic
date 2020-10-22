@@ -15,4 +15,7 @@ const App = () => {
   );
 };
 
+
+console.log(`YEAH WTR???`)
+
 ReactDOM.render(<App />, document.getElementById("root"));
