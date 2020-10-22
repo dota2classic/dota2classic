@@ -10,7 +10,6 @@ import { pendingAnimation } from "../steam-info";
 const Options = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 100px;
   border-right: 1px solid #242424;
 `;
 const MOption = styled.div`
@@ -51,12 +50,33 @@ const MOption = styled.div`
     &:hover {
       background: unset;
     }
-    color: grey;
+    color: #4a4a4a;
   }
 `;
 interface MProps {
   mode: MatchmakingMode;
 }
+
+const SteamLogo = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 80px;
+  padding: 20px;
+  border-bottom: 1px solid #242424;
+  height: 65px;
+  max-height: 25px;
+  align-items: center;
+`;
+
+const Username = styled.div`
+  font-size: 20px;
+  margin-right: 20px;
+`;
+
 const MatchmakingOption = observer((props: MProps) => {
   const { game } = useStores();
   return (
@@ -86,12 +106,21 @@ const MatchmakingOption = observer((props: MProps) => {
 });
 
 export const GameModes = observer(() => {
+  const { steam } = useStores();
   return (
     <Options>
+      <UserInfo>
+        <Username>{steam.personaName}</Username>
+        <SteamLogo src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/600px-Steam_icon_logo.svg.png" />
+      </UserInfo>
+
       <MOption className={"header"}>Поиск игры</MOption>
-      <MatchmakingOption mode={MatchmakingMode.SOLOMID} />
       <MatchmakingOption mode={MatchmakingMode.RANKED} />
       <MatchmakingOption mode={MatchmakingMode.UNRANKED} />
+      <MatchmakingOption mode={MatchmakingMode.SOLOMID} />
+      {/*<MatchmakingOption mode={MatchmakingMode.ABILITY_DRAFT} />*/}
+      {/*<MatchmakingOption mode={MatchmakingMode.DIRETIDE} />*/}
+      {/*<MatchmakingOption mode={MatchmakingMode.GREEVILING} />*/}
     </Options>
   );
 });

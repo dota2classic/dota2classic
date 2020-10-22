@@ -12,18 +12,11 @@ const InfoRow = styled.div`
   padding: 10px;
   width: 100%;
   border-bottom: 1px solid #242424;
+  height: 65px;
+  max-height: 45px;
 `;
 
-const UsernameInactiveInfo = styled.div`
-  font-size: 20px;
-  color: ${colors.error};
-  margin-right: 20px;
-`;
 
-const Username = styled.div`
-  font-size: 20px;
-  margin-right: 20px;
-`;
 
 const CancelFindGameButton = styled.div`
   padding: 10px;
@@ -59,30 +52,28 @@ export const pendingAnimation = keyframes`
 `;
 const SearchGameBar = styled.div`
   margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  border: none;
   animation: ${pendingAnimation} 2s linear infinite;
-`;
 
-const SteamLogo = styled.img`
-  width: 20px;
-  height: 20px;
+  & span.info {
+    font-size: 10px;
+  }
 `;
 
 export default observer(() => {
   const stores = useStores();
   return (
     <InfoRow>
-      {stores.steam.signedIn ? (
-        <Username>{stores.steam.personaName}</Username>
-      ) : (
-        <UsernameInactiveInfo>
-          Steam не запущен или нет пользователя
-        </UsernameInactiveInfo>
-      )}
-      <SteamLogo src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/600px-Steam_icon_logo.svg.png" />
-
       {stores.game.searchingMode !== undefined && (
         <SearchGameBar>
-          Поиск <b>{formatGameMode(stores.game.searchingMode)}</b>, игроков: {stores.game.inQueue[stores.game.activeMode]}
+          <span>
+            Поиск {formatGameMode(stores.game.searchingMode)}
+          </span>
+          <span className={"info"}>
+            игроков: {stores.game.inQueue[stores.game.activeMode]}
+          </span>
         </SearchGameBar>
       )}
 

@@ -2,7 +2,9 @@ import { observable, observe } from "mobx";
 import io from "socket.io-client";
 import { MatchmakingMode } from "../util/matchmaking-mode";
 import { Steam } from "./Steam";
-import {Messages, UpdateQueue} from "./messages";
+import { Messages, UpdateQueue } from "./messages";
+
+const isDev = process.env.DEV === "true";
 
 export class Game {
   @observable
@@ -26,9 +28,13 @@ export class Game {
   private socket!: SocketIOClient.Socket;
 
   constructor(private readonly steam: Steam) {
-    this.socket = io("ws://localhost:5010", {
-      transports: ["websocket"],
-    });
+    // this.socket = io(isDev ? "ws://localhost:5010" : "ws://5.101.50.140:5010", {
+    this.socket = isDev
+      ? io("ws://localhost:5010", { transports: ["websocket"] })
+      : io("ws://5.101.50.140", {
+          path: "/launcher",
+          transports: ["websocket"],
+        });
     observe(this.steam, "steamID", (steamId) => {
       if (steamId) {
         this.authorize();
@@ -52,14 +58,14 @@ export class Game {
   }
 
   cancelSearch() {
-    this.socket.emit(Messages.LEAVE_ALL_QUEUES)
+    this.socket.emit(Messages.LEAVE_ALL_QUEUES);
     this.searchingMode = undefined;
   }
 
   startSearch(activeMode: MatchmakingMode) {
     this.socket.emit(Messages.ENTER_QUEUE, {
-      mode: activeMode
-    })
+      mode: activeMode,
+    });
     this.searchingMode = activeMode;
   }
 }
