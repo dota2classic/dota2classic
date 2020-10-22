@@ -12,7 +12,8 @@ function createMainWindow() {
     webPreferences: { nodeIntegration: true },
     title: "dota2classic",
     width: 920,
-    height: 680
+    height: 680,
+    icon: path.join(__dirname, "static", "logo.jpg")
   });
 
   window.setResizable(false);

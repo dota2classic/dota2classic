@@ -16,17 +16,22 @@
     "mobx-react": "^6.2.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "socket.io-client": "^2.3.1",
     "source-map-support": "^0.5.16",
     "styled-components": "^5.2.0",
     "update-electron-app": "^2.0.1"
   },
   "build": {
     "appId": "ru.dota2classic.app",
-    "productName": "dota2classic launcher",
+    "productName": "dota2classic",
     "win": {
+      "icon": "./static/logo.png",
       "target": [
         "nsis"
       ]
+    },
+    "mac": {
+      "icon": "./static/logo.png"
     },
     "extraFiles": [
       "steam_appid.txt"
@@ -36,6 +41,7 @@
     "@babel/preset-react": "^7.12.1",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "@types/socket.io-client": "^1.4.34",
     "@types/styled-components": "^5.1.4",
     "electron": "4.2.12",
     "electron-builder": "^22.4.1",

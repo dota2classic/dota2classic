@@ -1,14 +1,21 @@
-import {observer} from "mobx-react";
-import {formatGameMode, MatchmakingMode} from "../../util/matchmaking-mode";
+import { observer } from "mobx-react";
+import { formatGameMode, MatchmakingMode } from "../../util/matchmaking-mode";
 import styled from "styled-components";
 import React from "react";
-import {useStores} from "../../store";
+import { useStores } from "../../store";
 // @ts-ignore
 import cx from "classnames";
+import { pendingAnimation } from "../steam-info";
 
+const Options = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  border-right: 1px solid #242424;
+`;
 const MOption = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: 10px 20px;
   cursor: pointer;
   transition: 0.3s ease;
@@ -17,6 +24,9 @@ const MOption = styled.div`
     background: rgba(1, 1, 1, 0.1);
   }
 
+  & span.info {
+    font-size: 12px;
+  }
   & + & {
     border-top: 1px solid #4e4d4d;
   }
@@ -30,12 +40,14 @@ const MOption = styled.div`
     }
   }
 
+  &.current {
+    background: rgba(248, 228, 0, 0.03);
+  }
   &.active {
-    background: rgba(1, 1, 1, 0.2);
+    animation: ${pendingAnimation} 2s linear infinite;
   }
   &.disabled {
     cursor: not-allowed;
-    font-size: 18px;
     &:hover {
       background: unset;
     }
@@ -50,7 +62,8 @@ const MatchmakingOption = observer((props: MProps) => {
   return (
     <MOption
       className={cx(
-        game.searchingMode === props.mode || game.activeMode === props.mode && "active",
+        game.searchingMode === props.mode && "active",
+        game.activeMode === props.mode && "current",
         game.searchingMode !== undefined &&
           game.searchingMode !== props.mode &&
           "disabled"
@@ -66,17 +79,12 @@ const MatchmakingOption = observer((props: MProps) => {
         }
       }}
     >
-      {formatGameMode(props.mode)}
+      <span>{formatGameMode(props.mode)}</span>
+      <span className={"info"}>{game.inQueue[props.mode]} в поиске</span>
     </MOption>
   );
 });
 
-const Options = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 100px 10px 10px;
-  border-right: 1px solid #242424;
-`;
 export const GameModes = observer(() => {
   return (
     <Options>

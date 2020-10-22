@@ -44,9 +44,9 @@ const CancelFindGameButton = styled.div`
   }
 `;
 
-const pendingAnimation = keyframes`
+export const pendingAnimation = keyframes`
   0% {
-    color: ${colors.primaryTextDark};
+    color: ${colors.primaryTextDark2};
   } 
 
   50% {
@@ -54,7 +54,7 @@ const pendingAnimation = keyframes`
   }
   
   100% {
-    color: ${colors.primaryTextDark};
+    color: ${colors.primaryTextDark2};
   }
 `;
 const SearchGameBar = styled.div`
@@ -82,7 +82,7 @@ export default observer(() => {
 
       {stores.game.searchingMode !== undefined && (
         <SearchGameBar>
-          Поиск <b>{formatGameMode(stores.game.searchingMode)}</b>, игроков: {stores.game.inQueue}
+          Поиск <b>{formatGameMode(stores.game.searchingMode)}</b>, игроков: {stores.game.inQueue[stores.game.activeMode]}
         </SearchGameBar>
       )}
 
