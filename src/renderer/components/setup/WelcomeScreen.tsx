@@ -127,7 +127,7 @@ export const WelcomeScreen = observer(() => {
           onClick={() => {
             const s = remote.dialog.showOpenDialog({
               properties: ["openFile"],
-              filters: [{ extensions: ["exe", "ts"], name: "Dota 2" }],
+              filters: [{ extensions: ["exe", "lnk"], name: "Dota 2" }],
             });
 
             if (s) {

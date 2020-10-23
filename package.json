@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
-    "dist": "yarn compile && electron-builder",
+    "dist": "npm run compile && electron-builder",
     "package": "electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
@@ -25,31 +25,23 @@
   },
   "build": {
     "appId": "ru.dota2classic.app",
-<<<<<<< HEAD
     "productName": "dota2classic launcher",
     "directories": {
       "buildResources": "./build/"
     },
-    "mac": {
-      "category": "public.app-category.productivity"
-    },
-    "win": {
-      "target": "nsis",
-      "publisherName": "dota2classic.ru"
-=======
-    "productName": "dota2classic",
     "win": {
       "icon": "./static/logo.png",
       "target": [
         "nsis"
-      ]
->>>>>>> 741d39273be29ac5da99445123e41573fc48bfb7
+      ],
+      "publisherName": "dota2classic.ru"
     },
     "mac": {
       "icon": "./static/logo.png"
     },
     "extraFiles": [
-      "steam_appid.txt"
+      "steam_appid.txt",
+      "rundota.exe"
     ]
   },
   "devDependencies": {

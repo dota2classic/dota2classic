@@ -2,11 +2,12 @@ import {Steam} from "./Steam";
 import Settings from "./Settings";
 import {Game} from "./Game";
 
-const steam = new Steam()
+const steam = new Steam();
+const settings = new Settings()
 export const storesInternal = {
   steam,
-  settings: new Settings(),
-  game: new Game(steam)
+  settings: settings,
+  game: new Game(steam, settings)
 };
 
 

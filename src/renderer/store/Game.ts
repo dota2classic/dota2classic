@@ -2,6 +2,9 @@ import { action, observable, observe } from "mobx";
 import io from "socket.io-client";
 import { MatchmakingMode } from "../util/matchmaking-mode";
 import { Steam } from "./Steam";
+import Settings from "./Settings";
+import { remote, ipcRenderer } from "electron"
+import * as path from "path"
 import {
   GameFound,
   LauncherServerStarted,
@@ -10,6 +13,8 @@ import {
   RoomState,
   UpdateQueue,
 } from "./messages";
+
+import { exec } from "child_process"
 
 const isDev = process.env.DEV === "true";
 
@@ -37,25 +42,25 @@ export class Game {
   @observable inQueue: {
     [key in MatchmakingMode]: number;
   } = {
-    [MatchmakingMode.ABILITY_DRAFT]: 0,
-    [MatchmakingMode.RANKED]: 0,
-    [MatchmakingMode.UNRANKED]: 0,
-    [MatchmakingMode.SOLOMID]: 0,
-    [MatchmakingMode.DIRETIDE]: 0,
-    [MatchmakingMode.GREEVILING]: 0,
-    [MatchmakingMode.TOURNAMENT]: 0,
-  };
+      [MatchmakingMode.ABILITY_DRAFT]: 0,
+      [MatchmakingMode.RANKED]: 0,
+      [MatchmakingMode.UNRANKED]: 0,
+      [MatchmakingMode.SOLOMID]: 0,
+      [MatchmakingMode.DIRETIDE]: 0,
+      [MatchmakingMode.GREEVILING]: 0,
+      [MatchmakingMode.TOURNAMENT]: 0,
+    };
 
   private socket!: SocketIOClient.Socket;
 
-  constructor(private readonly steam: Steam) {
+  constructor(private readonly steam: Steam, private readonly settings: Settings) {
     // this.socket = io(isDev ? "ws://localhost:5010" : "ws://5.101.50.140:5010", {
     this.socket = isDev
       ? io("ws://localhost:5010", { transports: ["websocket"] })
       : io("ws://5.101.50.140", {
-          path: "/launcher",
-          transports: ["websocket"],
-        });
+        path: "/launcher",
+        transports: ["websocket"],
+      });
     observe(this.steam, "steamID", (steamId) => {
       if (steamId) {
         this.authorize();
@@ -167,4 +172,61 @@ export class Game {
     this.searchingMode = undefined;
     this.pendingGame = undefined;
   };
+
+
+  private isRunning = (query: string) => {
+    let platform = process.platform;
+    let cmd = '';
+    switch (platform) {
+      case 'win32': cmd = `wmic process get ProcessID,ExecutablePath`; break;
+      case 'darwin': cmd = `ps -ax | grep ${query}`; break;
+      case 'linux': cmd = `ps -A`; break;
+      default: break;
+    }
+    return new Promise(resolve => {
+      exec(cmd, (err, stdout, stderr) => {
+        resolve(stdout.toLowerCase().indexOf(query.toLowerCase()) > -1)
+      });
+    })
+  }
+
+  public async launchGame() {
+
+    // just4test
+    this.serverURL = "glory.dota2classic.ru:27015"
+    if (this.settings.path_681) {
+
+      const isRunning = await this.isRunning(this.settings.path_681!!);
+
+      if (!isRunning) {
+        const gameDir = this.settings.path_681_dir!!
+        const launchPromise = new Promise((resolve) => {
+
+          const appDir = path.dirname(remote.app.getPath("exe"))
+          // const execPath = path.join(appDir, "rundota.exe");
+          const execPath = "C:\\Users\\79818\\Documents\\d2capp\\test-1\\rundota.exe"
+
+          alert(execPath);
+
+          ipcRenderer.sendSync('launchgame', {
+            execPath,
+            appDir,
+            gameDir,
+            filename: this.settings.path_681_filename!!
+          })
+          
+          setTimeout(resolve, 3000);
+        });
+        await launchPromise;
+      }
+      // ok, game launched. We need to connect to game now!
+      await this.connectToGame();
+    }
+  }
+
+  private async connectToGame() {
+    const cmd = `steam://connect/${this.serverURL}`
+    console.log(cmd)
+    remote.shell.openExternal(cmd);
+  }
 }

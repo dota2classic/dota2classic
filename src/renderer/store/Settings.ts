@@ -16,6 +16,11 @@ export default class Settings {
     return this.path_681 && path.dirname(this.path_681);
   }
 
+  @computed
+  public get path_681_filename(): string | undefined {
+    return this.path_681 && path.basename(this.path_681);
+  }
+
   constructor() {
     // const settingsAppData = remote.app.getPath("appData");
     // console.log(`hEY`, settingsAppData, remote.app.getPath("home"), );

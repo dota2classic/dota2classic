@@ -1,20 +1,29 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 import { format as formatUrl } from "url";
-
+import { exec } from "child_process"
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
 
+
+ipcMain.on('launchgame', (evt, arg) => {
+  const cmd = `cd ${arg.appDir} && rundota.exe ${arg.gameDir} ${arg.filename}`
+  console.log(cmd);
+  exec(cmd);
+})
 function createMainWindow() {
+  const iconPath = path.join(__dirname, "../../static", "logo.jpg");
+  console.log(iconPath);
   const window = new BrowserWindow({
     webPreferences: { nodeIntegration: true },
     title: "dota2classic",
     width: 920,
     height: 680,
-    icon: path.join(__dirname, "static", "logo.jpg")
+    icon: path.join(__dirname, "../../static", "logo.png")
   });
+  window.setMenuBarVisibility(false)
 
   window.setResizable(false);
   window.setMaximizable(false);
