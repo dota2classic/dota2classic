@@ -1,14 +1,8 @@
-import { action, observable, observe } from "mobx";
+import {action, observable, observe} from "mobx";
 import io from "socket.io-client";
-import { MatchmakingMode } from "../util/matchmaking-mode";
-import { Steam } from "./Steam";
-import {
-  GameFound,
-  LauncherServerStarted,
-  Messages,
-  ReadyCheckUpdate,
-  UpdateQueue,
-} from "./messages";
+import {MatchmakingMode} from "../util/matchmaking-mode";
+import {Steam} from "./Steam";
+import {GameFound, LauncherServerStarted, Messages, ReadyCheckUpdate, RoomState, UpdateQueue,} from "./messages";
 
 const isDev = process.env.DEV === "true";
 
@@ -18,7 +12,6 @@ interface PendingGameInfo {
   total: number;
   roomID: string;
   iAccepted: boolean;
-  serverURL?: string;
 }
 
 export class Game {
@@ -30,6 +23,9 @@ export class Game {
 
   @observable
   public pendingGame: PendingGameInfo | undefined = undefined;
+
+  @observable
+  public serverURL?: string;
 
   @observable inQueue: {
     [key in MatchmakingMode]: number;
@@ -68,13 +64,39 @@ export class Game {
     this.socket.on(Messages.GAME_FOUND, this.gameFound);
     this.socket.on(Messages.READY_CHECK_UPDATE, this.updateReadyCheck);
     this.socket.on(Messages.SERVER_STARTED, this.joinGame);
+    this.socket.on(Messages.ROOM_STATE, this.roomState);
+    this.socket.on(Messages.ROOM_NOT_READY, this.roomNotReady);
+    this.socket.on(Messages.QUEUE_STATE, this.queueState);
   }
+
+  private queueState = (mode?: MatchmakingMode) => {
+    this.searchingMode = mode === null ? undefined : mode;
+  };
+
+  private roomNotReady = ({ roomID }: any) => {
+    // shit.
+    if (roomID === this.pendingGame?.roomID) this.pendingGame = undefined;
+  };
+
+  private roomState = (data?: RoomState) => {
+    if (!data) {
+      this.pendingGame = undefined;
+    } else {
+      this.pendingGame = {
+        mode: data.mode,
+        accepted: data.accepted,
+        total: data.total,
+        roomID: data.roomId,
+        iAccepted: data.iAccepted,
+      };
+    }
+  };
 
   private joinGame = (data: LauncherServerStarted) => {
     console.log("YEAH! time to join da game!", data.url);
 
     if (this.pendingGame) {
-      this.pendingGame.serverURL = data.url;
+      this.serverURL = data.url;
     }
   };
 

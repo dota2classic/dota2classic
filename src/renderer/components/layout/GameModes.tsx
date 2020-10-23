@@ -11,6 +11,7 @@ const Options = styled.div`
   display: flex;
   flex-direction: column;
   border-right: 1px solid #242424;
+  width: 300px;
 `;
 const MOption = styled.div`
   display: flex;
@@ -73,8 +74,11 @@ const UserInfo = styled.div`
 `;
 
 const Username = styled.div`
-  font-size: 20px;
+  font-size: 14px;
   margin-right: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const MatchmakingOption = observer((props: MProps) => {
