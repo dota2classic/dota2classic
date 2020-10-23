@@ -1,8 +1,15 @@
-import {action, observable, observe} from "mobx";
+import { action, observable, observe } from "mobx";
 import io from "socket.io-client";
-import {MatchmakingMode} from "../util/matchmaking-mode";
-import {Steam} from "./Steam";
-import {GameFound, LauncherServerStarted, Messages, ReadyCheckUpdate, RoomState, UpdateQueue,} from "./messages";
+import { MatchmakingMode } from "../util/matchmaking-mode";
+import { Steam } from "./Steam";
+import {
+  GameFound,
+  LauncherServerStarted,
+  Messages,
+  ReadyCheckUpdate,
+  RoomState,
+  UpdateQueue,
+} from "./messages";
 
 const isDev = process.env.DEV === "true";
 
@@ -58,6 +65,11 @@ export class Game {
     });
     this.socket.on("connect", () => {
       this.authorize();
+    });
+
+    this.socket.on("disconnect", () => {
+      this.pendingGame = undefined;
+      this.searchingMode = undefined;
     });
 
     this.socket.on(Messages.QUEUE_UPDATE, this.updateQueue);

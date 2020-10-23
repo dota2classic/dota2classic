@@ -1,11 +1,11 @@
-import { observer } from "mobx-react";
-import { formatGameMode, MatchmakingMode } from "../../util/matchmaking-mode";
+import {observer} from "mobx-react";
+import {formatGameMode, MatchmakingMode} from "../../util/matchmaking-mode";
 import styled from "styled-components";
 import React from "react";
-import { useStores } from "../../store";
+import {useStores} from "../../store";
 // @ts-ignore
 import cx from "classnames";
-import { pendingAnimation } from "../steam-info";
+import {pendingAnimation} from "../steam-info";
 
 const Options = styled.div`
   display: flex;
@@ -62,6 +62,19 @@ const SteamLogo = styled.img`
   width: 20px;
   height: 20px;
 `;
+
+const SettingsIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  opacity: 0.5;
+
+  transition: 0.3s ease;
+  &:hover {
+    opacity: 1;
+  }
+`;
 const UserInfo = styled.div`
   display: flex;
   flex-direction: row;
@@ -110,10 +123,14 @@ const MatchmakingOption = observer((props: MProps) => {
 });
 
 export const GameModes = observer(() => {
-  const { steam } = useStores();
+  const { steam, settings } = useStores();
   return (
     <Options>
       <UserInfo>
+        <SettingsIcon
+          onClick={() => (settings.settingsOpen = true)}
+          src="https://icons-for-free.com/iconfiles/png/512/gear+preferences+settings+icon-1320196064274990321.png"
+        />
         <Username>{steam.personaName}</Username>
         <SteamLogo src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/600px-Steam_icon_logo.svg.png" />
       </UserInfo>

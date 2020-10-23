@@ -1,5 +1,5 @@
-import { observable } from "mobx";
-import { remote } from "electron";
+import {computed, observable} from "mobx";
+import {remote} from "electron";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -8,11 +8,17 @@ export default class Settings {
   @observable
   public path_681?: string;
 
+  @observable
+  settingsOpen: boolean = false;
+
+  @computed
+  public get path_681_dir(): string | undefined {
+    return this.path_681 && path.dirname(this.path_681);
+  }
+
   constructor() {
     // const settingsAppData = remote.app.getPath("appData");
     // console.log(`hEY`, settingsAppData, remote.app.getPath("home"), );
-
-
 
     const filePath = path.join(
       remote.app.getPath("userData"),
@@ -29,8 +35,7 @@ export default class Settings {
     }
   }
 
-
-  public set681Path(path: string){
+  public set681Path(path: string) {
     this.path_681 = path;
     this.updateConfig();
   }
