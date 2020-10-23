@@ -21,7 +21,8 @@
     "socket.io-client": "^2.3.1",
     "source-map-support": "^0.5.16",
     "styled-components": "^5.2.0",
-    "update-electron-app": "^2.0.1"
+    "update-electron-app": "^2.0.1",
+    "windows-shortcuts": "^0.1.6"
   },
   "build": {
     "appId": "ru.dota2classic.app",

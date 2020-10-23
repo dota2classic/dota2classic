@@ -1,4 +1,4 @@
-import {MatchmakingMode} from "../util/matchmaking-mode";
+import { MatchmakingMode } from "../util/matchmaking-mode";
 
 export class RoomState {
   constructor(
@@ -22,7 +22,9 @@ export enum Messages {
   SERVER_STARTED = "SERVER_STARTED",
   ROOM_STATE = "ROOM_STATE",
   ROOM_NOT_READY = "ROOM_NOT_READY",
-  QUEUE_STATE = 'QUEUE_STATE',
+  QUEUE_STATE = "QUEUE_STATE",
+  MATCH_FINISHED = "MATCH_FINISHED",
+  MATCH_STATE = 'MATCH_STATE',
 }
 
 export interface ReadyCheckUpdate {

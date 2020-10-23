@@ -3,8 +3,8 @@ import io from "socket.io-client";
 import { MatchmakingMode } from "../util/matchmaking-mode";
 import { Steam } from "./Steam";
 import Settings from "./Settings";
-import { remote, ipcRenderer } from "electron"
-import * as path from "path"
+import { ipcRenderer, remote } from "electron";
+import * as path from "path";
 import {
   GameFound,
   LauncherServerStarted,
@@ -14,7 +14,7 @@ import {
   UpdateQueue,
 } from "./messages";
 
-import { exec } from "child_process"
+import { exec } from "child_process";
 
 const isDev = process.env.DEV === "true";
 
@@ -42,25 +42,28 @@ export class Game {
   @observable inQueue: {
     [key in MatchmakingMode]: number;
   } = {
-      [MatchmakingMode.ABILITY_DRAFT]: 0,
-      [MatchmakingMode.RANKED]: 0,
-      [MatchmakingMode.UNRANKED]: 0,
-      [MatchmakingMode.SOLOMID]: 0,
-      [MatchmakingMode.DIRETIDE]: 0,
-      [MatchmakingMode.GREEVILING]: 0,
-      [MatchmakingMode.TOURNAMENT]: 0,
-    };
+    [MatchmakingMode.ABILITY_DRAFT]: 0,
+    [MatchmakingMode.RANKED]: 0,
+    [MatchmakingMode.UNRANKED]: 0,
+    [MatchmakingMode.SOLOMID]: 0,
+    [MatchmakingMode.DIRETIDE]: 0,
+    [MatchmakingMode.GREEVILING]: 0,
+    [MatchmakingMode.TOURNAMENT]: 0,
+  };
 
   private socket!: SocketIOClient.Socket;
 
-  constructor(private readonly steam: Steam, private readonly settings: Settings) {
+  constructor(
+    private readonly steam: Steam,
+    private readonly settings: Settings
+  ) {
     // this.socket = io(isDev ? "ws://localhost:5010" : "ws://5.101.50.140:5010", {
     this.socket = isDev
       ? io("ws://localhost:5010", { transports: ["websocket"] })
       : io("ws://5.101.50.140", {
-        path: "/launcher",
-        transports: ["websocket"],
-      });
+          path: "/launcher",
+          transports: ["websocket"],
+        });
     observe(this.steam, "steamID", (steamId) => {
       if (steamId) {
         this.authorize();
@@ -84,7 +87,17 @@ export class Game {
     this.socket.on(Messages.ROOM_STATE, this.roomState);
     this.socket.on(Messages.ROOM_NOT_READY, this.roomNotReady);
     this.socket.on(Messages.QUEUE_STATE, this.queueState);
+    this.socket.on(Messages.MATCH_FINISHED, this.matchFinished);
+    this.socket.on(Messages.MATCH_STATE, this.matchState);
   }
+
+  private matchState = (url?: string) => {
+    this.serverURL = url;
+  };
+  private matchFinished = ({ roomId }: any) => {
+    this.serverURL = undefined;
+    this.pendingGame = undefined;
+  };
 
   private queueState = (mode?: MatchmakingMode) => {
     this.searchingMode = mode === null ? undefined : mode;
@@ -165,6 +178,7 @@ export class Game {
     });
     if (this.pendingGame) this.pendingGame.iAccepted = true;
   };
+
   public declinePendingGame = () => {
     this.socket.emit(Messages.SET_READY_CHECK, {
       roomID: this.pendingGame?.roomID,
@@ -174,55 +188,50 @@ export class Game {
     this.pendingGame = undefined;
   };
 
-
   private isRunning = (query: string) => {
     let platform = process.platform;
-    let cmd = '';
+    let cmd = "";
     switch (platform) {
-      case 'win32': cmd = `wmic process get ProcessID,ExecutablePath`; break;
-      case 'darwin': cmd = `ps -ax | grep ${query}`; break;
-      case 'linux': cmd = `ps -A`; break;
-      default: break;
+      case "win32":
+        cmd = `wmic process get ProcessID,ExecutablePath`;
+        break;
+      case "darwin":
+        cmd = `ps -ax | grep ${query}`;
+        break;
+      case "linux":
+        cmd = `ps -A`;
+        break;
+      default:
+        break;
     }
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       exec(cmd, (err, stdout, stderr) => {
-        resolve(stdout.toLowerCase().indexOf(query.toLowerCase()) > -1)
+        resolve(stdout.toLowerCase().indexOf(query.toLowerCase()) > -1);
       });
-    })
-  }
+    });
+  };
 
   public async launchGame() {
-
     // just4test
     if (this.settings.path_681) {
-
-      const isRunning = await this.isRunning(this.settings.path_681!!);
+      const isRunning = await this.isRunning(this.settings.path_681_exe!!);
 
       if (!isRunning) {
-        const gameDir = this.settings.path_681_dir!!
+        const gameDir = this.settings.path_681_dir!!;
         const launchPromise = new Promise((resolve) => {
-
-          const appDir = path.dirname(remote.app.getPath("exe"))
+          const appDir = path.dirname(remote.app.getPath("exe"));
 
           // const appDir = "C:\\Users\\79818\\Documents\\d2capp\\test-1"
-        
+
           const execPath = path.join(appDir, "rundota.exe");
-          
 
-          console.log({
+          ipcRenderer.send("launchgame", {
             execPath,
             appDir,
             gameDir,
-            filename: this.settings.path_681_filename!!
-          })
+            filename: this.settings.path_681_filename!!,
+          });
 
-          ipcRenderer.send('launchgame', {
-            execPath,
-            appDir,
-            gameDir,
-            filename: this.settings.path_681_filename!!
-          })
-          
           setTimeout(resolve, 3000);
         });
         await launchPromise;
@@ -233,7 +242,7 @@ export class Game {
   }
 
   private async connectToGame() {
-    const cmd = `steam://connect/${this.serverURL}`
+    const cmd = `steam://connect/${this.serverURL}`;
     console.log(cmd);
     remote.shell.openExternal(cmd);
   }
