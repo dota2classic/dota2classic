@@ -33,9 +33,6 @@ export const Layout = observer(({ children }: PropsWithChildren<{}>) => {
         <GameModes />
         <Content>
           <SteamInfo />
-          <button onClick={() => stores.game.launchGame()}>
-            launchGame
-          </button>
           <SelectedGameMode />
           <AcceptGameModal />
           <SettingsModal />

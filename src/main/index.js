@@ -9,8 +9,17 @@ let mainWindow;
 
 
 ipcMain.on('launchgame', (evt, arg) => {
-  const cmd = `cd ${arg.appDir} && rundota.exe ${arg.gameDir} ${arg.filename}`
-  execAsync(cmd);
+  const args = typeof arg === 'string' ? JSON.stringify(arg) : arg;
+  const cmd = `cd ${args.appDir} && rundota.exe ${args.gameDir} ${args.filename}`;
+  console.log(cmd);
+  exec(cmd, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
+  });
 })
 function createMainWindow() {
   const iconPath = path.join(__dirname, "../../static", "logo.jpg");

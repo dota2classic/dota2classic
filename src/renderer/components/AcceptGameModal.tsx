@@ -1,7 +1,7 @@
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import React from "react";
-import {useStores} from "../store";
+import { useStores } from "../store";
 
 const Modal = styled.div`
   z-index: 100;
@@ -92,6 +92,18 @@ const AcceptDots = styled.div`
 const IAcceptGameModal = () => {
   const { game } = useStores();
 
+  if (game.serverURL)
+      return (
+        <ModalWrapper>
+          <Modal>
+            <GameReady>Игра готова!</GameReady>
+            <Buttons>
+              <Button onClick={() => game.launchGame()}>Подключиться</Button>
+            </Buttons>
+          </Modal>
+        </ModalWrapper>
+      );
+      
   if (game.pendingGame)
     if (!game.pendingGame.iAccepted)
       return (

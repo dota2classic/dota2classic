@@ -99,6 +99,7 @@ export class Game {
     if (!data) {
       this.pendingGame = undefined;
     } else {
+      this.searchingMode = undefined;
       this.pendingGame = {
         mode: data.mode,
         accepted: data.accepted,
@@ -202,10 +203,20 @@ export class Game {
         const launchPromise = new Promise((resolve) => {
 
           const appDir = path.dirname(remote.app.getPath("exe"))
-          const execPath = path.join(appDir, "rundota.exe");
-          // const execPath = "C:\\Users\\79818\\Documents\\d2capp\\test-1\\rundota.exe"
 
-          ipcRenderer.sendSync('launchgame', {
+          // const appDir = "C:\\Users\\79818\\Documents\\d2capp\\test-1"
+        
+          const execPath = path.join(appDir, "rundota.exe");
+          
+
+          console.log({
+            execPath,
+            appDir,
+            gameDir,
+            filename: this.settings.path_681_filename!!
+          })
+
+          ipcRenderer.send('launchgame', {
             execPath,
             appDir,
             gameDir,
@@ -223,7 +234,7 @@ export class Game {
 
   private async connectToGame() {
     const cmd = `steam://connect/${this.serverURL}`
-    console.log(cmd)
+    console.log(cmd);
     remote.shell.openExternal(cmd);
   }
 }
