@@ -1,6 +1,6 @@
 {
   "name": "electron-webpack-quick-start",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -11,17 +11,21 @@
   },
   "dependencies": {
     "bignumber.js": "^9.0.1",
+    "classnames": "^2.2.6",
+    "dataurl": "^0.1.0",
     "greenworks": "git+https://github.com/greenheartgames/greenworks.git",
-    "mobx": "^6.0.1",
-    "mobx-react": "^7.0.0",
+    "mobx": "^5.11.0",
+    "mobx-react": "^6.2.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "socket.io-client": "^2.3.1",
     "source-map-support": "^0.5.16",
     "styled-components": "^5.2.0",
     "update-electron-app": "^2.0.1"
   },
   "build": {
     "appId": "ru.dota2classic.app",
+<<<<<<< HEAD
     "productName": "dota2classic launcher",
     "directories": {
       "buildResources": "./build/"
@@ -32,6 +36,17 @@
     "win": {
       "target": "nsis",
       "publisherName": "dota2classic.ru"
+=======
+    "productName": "dota2classic",
+    "win": {
+      "icon": "./static/logo.png",
+      "target": [
+        "nsis"
+      ]
+>>>>>>> 741d39273be29ac5da99445123e41573fc48bfb7
+    },
+    "mac": {
+      "icon": "./static/logo.png"
     },
     "extraFiles": [
       "steam_appid.txt"
@@ -41,6 +56,7 @@
     "@babel/preset-react": "^7.12.1",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "@types/socket.io-client": "^1.4.34",
     "@types/styled-components": "^5.1.4",
     "electron": "4.2.12",
     "electron-builder": "^22.4.1",

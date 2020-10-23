@@ -1,15 +1,17 @@
-import { createGlobalStyle } from 'styled-components'
-
+import { createGlobalStyle } from "styled-components";
 
 export const colors = {
-  darkBg: 'rgb(16, 18, 19)',
-  primaryText: 'rgb(217, 217, 217)',
-  error: 'rgb(198,38,38)'
-}
-
+  darkBg: "rgb(16, 18, 19)",
+  evenDarkerBg: "rgb(13,13,14)",
+  primaryText: "rgb(217, 217, 217)",
+  primaryTextDark: "rgb(131,130,130)",
+  primaryTextDark2: "rgb(83,82,82)",
+  error: "rgb(198,38,38)",
+};
 
 declare var __static: string;
 
+// noinspection CssUnknownTarget
 export const GlobalStyle = createGlobalStyle`
 
 
@@ -40,10 +42,10 @@ export const GlobalStyle = createGlobalStyle`
 }
 
   body {
+    overflow: hidden;
     height: 100vh;
     width: 100vw;
     margin: 0 0;
     font-family: "Trajan Pro 3", sans-serif;
-
   }
-`
+`;

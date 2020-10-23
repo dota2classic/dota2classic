@@ -1,8 +1,8 @@
 // @ts-ignore
 
 import greenworks from "greenworks";
-import {computed, observable} from "mobx";
-import {steam64to32} from "../util/steamids";
+import { action, computed, observable } from "mobx";
+import { steam64to32 } from "../util/steamids";
 
 export class Steam {
   @observable steamID?: string;
@@ -10,8 +10,13 @@ export class Steam {
 
   @observable userImage?: string;
 
+  @observable steamRunning?: boolean;
+
   @observable
   public isLoading = true;
+
+  @observable
+  public noUser = true;
 
   @computed
   public get signedIn(): boolean {
@@ -23,21 +28,37 @@ export class Steam {
     return this.steamID && steam64to32(this.steamID);
   }
 
-  @computed
-  public online: boolean = false;
-
   constructor() {
-    greenworks.init();
-    // this.sync();
+    this.sync();
   }
 
+  @action
   public sync() {
+    this.isLoading = true;
+    try {
+      greenworks.init();
+      this.steamRunning = true;
+    } catch (e) {
+      console.log(`Init error`, e);
+      if (e.message.includes("not running")) this.steamRunning = false;
+      else if(e.message.includes("is running")) this.steamRunning = true;
+      return;
+    } finally {
+      console.log(`Settting loading to false`);
+      this.isLoading = false;
+    }
+
+    console.log(`After init`);
     try {
       const info = greenworks.getSteamId();
       this.steamID = info.steamId;
       this.personaName = info.screenName;
+      this.noUser = false;
     } catch (e) {
+      this.noUser = true;
+      console.log(`auth error`, e);
     } finally {
+      console.log(`Settting loading to false`);
       this.isLoading = false;
     }
   }

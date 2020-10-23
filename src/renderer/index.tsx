@@ -2,20 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "mobx-react";
 
-import { stores } from "./store";
-import SteamInfo from "./components/steam-info";
+import { storesInternal } from "./store";
 import { Layout } from "./components/layout/layout";
 import { GlobalStyle } from "./shared";
 
 const App = () => {
   return (
-    <Provider {...stores}>
+    <Provider {...storesInternal}>
       <GlobalStyle />
-      <Layout>
-        <SteamInfo />
-      </Layout>
+      <Layout />
     </Provider>
   );
 };
+
+
+console.log(`YEAH WTR???`)
 
 ReactDOM.render(<App />, document.getElementById("root"));
