@@ -23,10 +23,15 @@
   "build": {
     "appId": "ru.dota2classic.app",
     "productName": "dota2classic launcher",
+    "directories": {
+      "buildResources": "./build/"
+    },
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
     "win": {
-      "target": [
-        "nsis"
-      ]
+      "target": "nsis",
+      "publisherName": "dota2classic.ru"
     },
     "extraFiles": [
       "steam_appid.txt"

@@ -10,6 +10,7 @@ const FullScreen = styled.div`
   background-color: ${colors.darkBg};
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const rotate = keyframes`
@@ -58,7 +59,7 @@ export const WelcomeScreen = observer(() => {
     return (
       <FullScreen>
         <LoadingLogo src="https://1000logos.net/wp-content/uploads/2019/03/Dota-2-Logo.png" />
-        <Dota2Classic>dota2classic</Dota2Classic>
+        <Dota2Classic>dota2classic launcher</Dota2Classic>
       </FullScreen>
     );
 
