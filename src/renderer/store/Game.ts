@@ -193,7 +193,6 @@ export class Game {
   public async launchGame() {
 
     // just4test
-    this.serverURL = "glory.dota2classic.ru:27015"
     if (this.settings.path_681) {
 
       const isRunning = await this.isRunning(this.settings.path_681!!);
@@ -203,10 +202,8 @@ export class Game {
         const launchPromise = new Promise((resolve) => {
 
           const appDir = path.dirname(remote.app.getPath("exe"))
-          // const execPath = path.join(appDir, "rundota.exe");
-          const execPath = "C:\\Users\\79818\\Documents\\d2capp\\test-1\\rundota.exe"
-
-          alert(execPath);
+          const execPath = path.join(appDir, "rundota.exe");
+          // const execPath = "C:\\Users\\79818\\Documents\\d2capp\\test-1\\rundota.exe"
 
           ipcRenderer.sendSync('launchgame', {
             execPath,

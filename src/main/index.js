@@ -10,8 +10,7 @@ let mainWindow;
 
 ipcMain.on('launchgame', (evt, arg) => {
   const cmd = `cd ${arg.appDir} && rundota.exe ${arg.gameDir} ${arg.filename}`
-  console.log(cmd);
-  exec(cmd);
+  execAsync(cmd);
 })
 function createMainWindow() {
   const iconPath = path.join(__dirname, "../../static", "logo.jpg");
