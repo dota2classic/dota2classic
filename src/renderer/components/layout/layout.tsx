@@ -24,6 +24,9 @@ const Content = styled.div`
   flex-direction: column;
   flex: 1;
 `;
+
+declare var __static: string;
+
 export const Layout = observer(({ children }: PropsWithChildren<{}>) => {
   const stores = useStores();
 
@@ -32,6 +35,7 @@ export const Layout = observer(({ children }: PropsWithChildren<{}>) => {
       <AppLayout>
         <GameModes />
         <Content>
+          {/* <button onClick={() => stores.game.playMatchSound()}>Test</button> */}
           <SteamInfo />
           <SelectedGameMode />
           <AcceptGameModal />

@@ -5,6 +5,9 @@ import { Steam } from "./Steam";
 import Settings from "./Settings";
 import { ipcRenderer, remote } from "electron";
 import * as path from "path";
+//@ts-ignore
+import matchSound from "../../../static/match.mp3";
+
 import {
   GameFound,
   LauncherServerStarted,
@@ -131,6 +134,10 @@ export class Game {
     }
   };
 
+  public playMatchSound(){
+      (new Audio(matchSound))?.play()
+  }
+
   @action
   private gameFound = ({ mode, total, roomID, accepted }: GameFound) => {
     this.pendingGame = {
@@ -141,7 +148,7 @@ export class Game {
       iAccepted: false,
     };
 
-    new Audio("match.mp3").play();
+    this.playMatchSound();
   };
 
   private updateReadyCheck = (data: ReadyCheckUpdate) => {

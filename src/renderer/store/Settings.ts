@@ -66,6 +66,8 @@ export default class Settings {
 
       const result = await res;
 
+      console.log(result);
+
       this.path_681_exe = result.target;
     } else {
       console.log("im exe")

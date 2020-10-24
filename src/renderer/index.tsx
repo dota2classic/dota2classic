@@ -4,17 +4,16 @@ import { Provider } from "mobx-react";
 
 import { storesInternal } from "./store";
 import { Layout } from "./components/layout/layout";
-import { GlobalStyle } from "./shared";
+
+import "./global.scss"
 
 const App = () => {
   return (
     <Provider {...storesInternal}>
-      <GlobalStyle />
       <Layout />
     </Provider>
   );
 };
-
 
 console.log(`YEAH WTR???`)
 
